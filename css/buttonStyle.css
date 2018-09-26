@@ -1,0 +1,91 @@
+
+
+
+.btn 
+{
+	color: #fff !important;
+	background-color: black;
+	display: inline-block;
+	position: relative;
+	padding: .5em 1em;
+	margin-bottom: 0;
+	font-weight: 400;
+	line-height: 1.2;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 2px solid #6e7376;
+	border-radius: .3em ;
+	text-decoration: NONE;
+	transition-duration: 0.6s;
+}
+
+.btn:hover
+{
+	color: #ffffff ;
+	background-color: gray;
+}
+
+.btn:focus
+{
+	color: #ffffff !important;
+	background-color:gray;
+	
+}
+
+.btn:active
+{
+	color: #ffffff !important;
+	background-color: gray;
+	top:2px;
+	left:2px;
+	
+}
+ .dropdown-menu
+ {
+    background: rgba(51,51,51,0.8);
+    margin-top:2px;
+    border-style:  dashed ;
+    border-bottom-width:2px;
+    border-bottom-color: rgba(30,30,30,0.8);
+    border-left-width:2px;
+    border-left-color: rgba(30,30,30,0.8);
+    border-right-width:2px;
+    border-right-color: rgba(30,30,30,0.8);
+    
+    }
+
+
+
+.dropdown-menu li a{
+    color:white;
+}
+
+.dropdown-menu li:hover {
+    background-color: black;
+    color: #F2EDE4;
+}
+.dropdown-menu li:active {
+    background-color: black;
+    color: #F2EDE4;
+}
+
+.dropdown-menu li > a:hover {
+    text-decoration: none;
+}
+ .navbar-header .navbar-brand, .navbar-header .navbar-brand:hover {
+ 	color:white;
+    height:auto;
+    padding-right:10px;
+    background-color:black;
+  }
+  
+  
+  ul.nav.navbar-nav li a:hover{
+  	background-color: black;
+    color: #F2EDE4;
+    border-color:#3c3c3c;
+  	
+  }
+  
