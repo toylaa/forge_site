@@ -23,7 +23,14 @@
 
 <?php 
 		session_start();
-		$username = $_SESSION["forge_usn"];
+		
+		if (isset($_SESSION["forge_usn"]))
+		{
+		 	$username = $_SESSION["forge_usn"];
+		}else
+		{
+		 	header('Location: '."index.php");
+		}
 ?>
 <body>
 

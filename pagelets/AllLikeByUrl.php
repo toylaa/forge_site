@@ -1,13 +1,21 @@
 <?php 
  session_start(); 
- $username = $_SESSION["forge_usn"];
- echo '<div style="display:none;" id="forge_usn">'.$username.'</div>';
+	if (isset($_SESSION["forge_usn"]))
+	{
+		$username = $_SESSION["forge_usn"];
+	    echo '<div style="display:none;" id="forge_usn">'.$username.'</div>';
+	}else
+	{
+	  	header('Location: '."index.php");
+	}
+
+ 
 ?>
 
 
 <div class="jumbotron">
 	<h1>PowerPooling by URL </h1>
-<h4>Got a new post? Let's generate some power likes.</h4>
+<h4><!--Got a new post?--> Let's generate some power likes.</h4>
 
 
 
@@ -21,8 +29,9 @@
 	<hr style="width:50%;float:left;background-color: white;">
 	<div style="clear:left;"></div>
 	<ul style="text-align:left;">
-		<li> Go to Instagram.com/<?=$username; ?></li>
-		<li> Copy the FULL URL of any post you wish to submit.</li>
+		<li> Navigate to <a href="http://Instagram.com/<?=$username; ?>" target="_blank" >Instagram.com/<?=$username; ?></a></li>
+		<li> Click on the image you wish to PowerPool</li>
+		<li> Copy the FULL <span>URL</span> of any post you wish to submit.</li>
 		<li> MAKE SURE your URL is valid <strong>BEFORE</strong> submission.</li>
 		<li>If you submit the same post twice, nothing will happen.</li>
 		
@@ -49,8 +58,9 @@
 	function validateUrl(){
 		//Valid URL looks like this
 		//https://www.instagram.com/p/Bld4KMtB2By/?taken-by=toylaa
-		$url = document.getElementById("urlIn").value;
-		$elements = $url.split("/");
+		$thisUrl = document.getElementById("urlIn").value;
+		//alert('Validating: '+ $thisUrl);
+		$elements = $thisUrl.split("/");
 		/*
 		$elements[0]: https:
 		$elements[1]: 
@@ -59,30 +69,72 @@
 		$elements[4]: BU7SuvAlbcY
 		$elements[5]: ?taken-by=toylaa
 		*/
-		ErrMsg = '';
+		$ErrMsg = '';
 		//URL formatting checks.
-		if ($elements[0] != 'https:' ){ ErrMsg = '-URL not Secure. Please use HTTPS.';}
-		if ($elements[1] != '' )                 { ErrMsg = '-URL not properly formed.';}
-		if ($elements[2] != 'www.instagram.com' ){ ErrMsg = '-URL not properly formed.';}
+		if ($elements[0] != 'https:' ){ $ErrMsg = '\n- URL not Secure. Please use HTTPS.';}
+		//if ($elements[1] != '' )                 { $ErrMsg += '\n- URL not properly formed.';}
+		if ($elements[2] != 'www.instagram.com' ){ $ErrMsg += '\n- URL not properly formed.';}
 		//check 'taken by ='user in question
 		$forge_usn = $("#forge_usn").html();
-		$takenByArr = $elements[5].split("=");
-		$takenBy = $takenByArr[1];
-		//
-		if ( $takenBy != $forge_usn ){ ErrMsg += '\nYou may only Submit posts taken by '+$forge_usn;}	
-		//
-		if (ErrMsg != ''){
-			swal('ERROR', ErrMsg);
+		if (typeof $elements[5] !== 'undefined' )
+		{ 
+			$takenByArr = $elements[5].split("=");
+			$takenBy = $takenByArr[1];
+			//
+			if ( $takenBy != $forge_usn ){ $ErrMsg += '\n- You may only Submit posts taken by '+$forge_usn;}	
+		}else 
+		{
+			$ErrMsg += '\n- URL not properly formed.';
 		}
-		else if(ErrMsg == ''){			
-			submitUrl($url);
-		}	
+		//
+		if ($ErrMsg != ''){
+			alert('ERROR' + $ErrMsg);
+		}
+		else if($ErrMsg == ''){			
+			submitUrl($thisUrl);
+		}
 	}
 
-function submitUrl(){
-	swal("Good Link submitted! ", $url);
-	//TBD - do something with aJax()?
-	/**/
+function submitUrl(thisUrl){
+	$sbmUrl = thisUrl;
+	/*   */
+	//alert('Good Link Submitted !');
+	/*   */
+	jQuery.ajax({
+				//
+	            type:"get",
+	            //dataType:"json",
+	            url: "assets/queuer.php",//compoundUrl,
+	            //data: {postUrl: $sbmUrl, info: info},
+	            data: {postUrl: $sbmUrl},
+	            success: function(data) {
+	              // Pseudo-Multi-Value
+	              results = data.trim().split('^');
+
+	              if (results[0] != 'fail')
+	              {
+	              	swal ('Ajax Success!', 'results[1]: ' + results[1] );
+	              }else
+	              {
+	              	swal ('FAIL');
+	              }
+
+	              
+	              //TBD - CHECK response data for Success/Fail 
+
+
+
+
+
+	            },
+	            error: function(data) {
+	              	alert("Ajax Error! \ndata: \n"+data); 
+	              	//Errors caused by ajax url [level] typically 
+	            },
+	        });
+
+	
+
 }
 
 </script>
