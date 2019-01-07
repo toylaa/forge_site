@@ -41,8 +41,8 @@
 
 	<div class="container" style="width:95%;">
 			
-		<div class="alert">
-		  	<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<div class="alert" id="alertBar">
+		  	<span class="closebtn" id="closeAlertBtn">&times;</span> 
 	  		<strong>Welcome back to the hustle, <?=ucfirst($username); ?>!</strong>	
 		</div>
 
@@ -70,42 +70,45 @@
 
 	<script type="text/javascript">
 		
-		$(document).ready(function(){
-          //swal("document/jquery loaded");
-
-          loadPagelet('dash');
-          $header = document.getElementById("header");
-
-          $("li").click(function(e) {
+		$(document).ready(function(){          
+		//
+			loadPagelet('dash');			
+			//
+			$("li").click(function(e) {
 			  e.preventDefault();
 			  $("li").removeClass("selected");
 			  $(this).addClass("selected");
 			  $(".closebtn").click();		  
 
 			});
+			//
+			$(".LikeByUrlBtn").click(function(){
+			    // URL lower nav tab clicked
+			    loadPagelet("AllLikeByUrl");   
+			  });
+			//
+			$(".dashletBtn").click(function(){
+			    // DASH lower nav tab clicked
+			    loadPagelet("dash");   
+			  });
 
+			// Dismiss Alert Bar On 'X' click
+			$("#closeAlertBtn").click(function(){
+				$("#alertBar").slideUp();
+			 });
 
-
-          $(".LikeByUrlBtn").click(function(){
-                // button clicked
-                loadPagelet("AllLikeByUrl");   
-                $header.scrollIntoView(true);             
-                //swal("You clicked the button !");
-              });
-
-          $(".dashletBtn").click(function(){
-                // button clicked
-                loadPagelet("dash");   
-                $header.scrollIntoView(true);             
-                //swal("You clicked the button !");
-              });
-        });
+			// Dismiss Alert Bar after 5 seconds
+			setTimeout(function(){
+				//alert('Timeout');
+				//document.getElementbyId('alertBar').style.display = 'none';
+			$("#alertBar").slideUp();
+			}, 5000);
+		//
+		});
 
 	
-
 	function loadPagelet(pageName){		
 		//
-		//compoundUrl = 'loginhandler.php?usnme='+this_usn+'&uspss='+this_pass;
 		compoundUrl = 'pagelets/'+ pageName + '.php';
 		//
 		//Make aJax Request
@@ -117,23 +120,21 @@
 		            //data: {action: 'submit_data', info: info},
 		            success: function(data) {
 		                //;
-		                //response = data.trim();
-		               $("#mutable").html(data);
-		              
+		               $("#mutable").html(data);		              
 		            },
 		            error: function(data) {
 		              	alert("Error! \ndata: \n"+data); 
 		            },
 		        });
-			
-		
-	}
 
+		$header = document.getElementById("header");
+		$header.scrollIntoView(true);
+	}
 	</script>
+	
 	<div id="footer" style="text-align: center">
 		<?php include("assets/Footer.php"); ?>		
 	</div>
 
 </body>
 </html>
-

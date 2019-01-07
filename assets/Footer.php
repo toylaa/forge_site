@@ -1,8 +1,6 @@
 <footer class="footer-distributed">
   
   			<div class="footer-left">
-  
-  				
   				
   				<span><img style="height:100px;width:100px;border-radius: 40px;" src="imgs/forge.png"></span>
   
@@ -52,7 +50,7 @@
   
   					<!--a href="https://www.facebook.com/toylaaa"><i class="fa fa-facebook"></i></a-->
 
-  					<a href="https://instagram.com/realfratstars"><i class="fa fa-instagram"></i></a>
+  					<a target="Blank_" href="https://instagram.com/realfratstars"><i class="fa fa-instagram"></i></a>
   
   				</div>
   

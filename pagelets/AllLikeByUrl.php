@@ -29,9 +29,9 @@
 	<hr style="width:50%;float:left;background-color: white;">
 	<div style="clear:left;"></div>
 	<ul style="text-align:left;">
-		<li> Navigate to <a href="http://Instagram.com/<?=$username; ?>" target="_blank" >Instagram.com/<?=$username; ?></a></li>
-		<li> Click on the image you wish to PowerPool</li>
-		<li> Copy the FULL <span>URL</span> of any post you wish to submit.</li>
+		<li> Go to <a href="http://Instagram.com/<?=$username; ?>" target="_blank" >Instagram.com/<?=$username; ?></a></li>
+		<li> Navigate to the page containing the instagram post. </li>
+		<li> Copy the FULL <span><a href="https://en.wikipedia.org/wiki/URL">URL</a></span> of any post you wish to submit.</li>
 		<li> MAKE SURE your URL is valid <strong>BEFORE</strong> submission.</li>
 		<li>If you submit the same post twice, nothing will happen.</li>
 		
@@ -42,7 +42,10 @@
 
 
 	<br>
-	<button class="btn" id="UrlSubmitBtn" style="float:right;">Drop this URL into PowerPool QUEUE</button>
+	<span id="submitSpan">
+		<button class="btn" id="UrlSubmitBtn" style="float:right;">Drop this URL into PowerPool QUEUE</button>	
+	</span>
+	
 	<br>
 </div>
 
@@ -71,11 +74,14 @@
 		*/
 		$ErrMsg = '';
 		//URL formatting checks.
-		if ($elements[0] != 'https:' ){ $ErrMsg = '\n- URL not Secure. Please use HTTPS.';}
+		if ($elements[0] != 'https:' ){ $ErrMsg = '\n- URL not Secure. Please use HTTPS://.';}
 		//if ($elements[1] != '' )                 { $ErrMsg += '\n- URL not properly formed.';}
 		if ($elements[2] != 'www.instagram.com' ){ $ErrMsg += '\n- URL not properly formed.';}
+		
+		/*
 		//check 'taken by ='user in question
 		$forge_usn = $("#forge_usn").html();
+		
 		if (typeof $elements[5] !== 'undefined' )
 		{ 
 			$takenByArr = $elements[5].split("=");
@@ -86,7 +92,7 @@
 		{
 			$ErrMsg += '\n- URL not properly formed.';
 		}
-		//
+		*/
 		if ($ErrMsg != ''){
 			alert('ERROR' + $ErrMsg);
 		}
@@ -98,42 +104,36 @@
 function submitUrl(thisUrl){
 	$sbmUrl = thisUrl;
 	/*   */
-	//alert('Good Link Submitted !');
+	//alert('Good Link Submitted !.. </br> calling ajax');
 	/*   */
 	jQuery.ajax({
 				//
 	            type:"get",
 	            //dataType:"json",
 	            url: "assets/queuer.php",//compoundUrl,
+	            //url: "assets/queuer2.php",//compoundUrl,
 	            //data: {postUrl: $sbmUrl, info: info},
 	            data: {postUrl: $sbmUrl},
 	            success: function(data) {
 	              // Pseudo-Multi-Value
 	              results = data.trim().split('^');
-
+ 
+	              // CHECK response data for Success/Fail 
 	              if (results[0] != 'fail')
 	              {
-	              	swal ('Ajax Success!', 'results[1]: ' + results[1] );
-	              }else
-	              {
-	              	swal ('FAIL');
-	              }
+	              	swal ('Success!', results[1] );
+	              	//swal ('Ajax Success!', 'data: ' + data);
 
-	              
-	              //TBD - CHECK response data for Success/Fail 
-
-
-
-
-
+	              }else{
+	              	swal ('Whoah!', results[1] );
+	              }    
 	            },
 	            error: function(data) {
 	              	alert("Ajax Error! \ndata: \n"+data); 
+	              	console.dir(data);
 	              	//Errors caused by ajax url [level] typically 
 	            },
 	        });
-
-	
 
 }
 
